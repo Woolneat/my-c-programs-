@@ -1,0 +1,104 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+int my_score=0, your_score=0;
+int main(){
+    void game_start();
+    int choice;
+    while(1){
+        printf("enter 1 to start and 0 to exit\n");
+        scanf("%d",&choice);
+        switch(choice){
+            case 0:
+            printf("your score is %d\n",your_score);
+            printf("my score is %d",my_score);
+            return 0;
+            case 1:
+            game_start();
+            break;
+            default:
+            printf("enter valid choice:\n");
+            break;
+        }
+    }
+    return 0;
+}
+void game_start(){
+    char ch,word[5];
+    FILE *fptr;
+    fptr = fopen("words.txt","r");
+    if(fptr == NULL){
+        printf("could not open the file\n");
+        exit(1);
+    }
+    int num_words=0;
+    while((ch = fgetc(fptr))!= EOF){
+        if(ch == '\n'){
+            num_words++;
+        }
+    }
+    rewind(fptr);
+    srand(time(NULL));
+    int word_num = rand()%num_words + 1;
+    for(int i=1;i<=word_num;i++){
+        fgets(word,sizeof(word),fptr);
+    }
+    fclose(fptr);
+    printf("*******************GAME STARTS**********************\n");
+    printf("enter r for rock\nenter s for scissor\nenter p for paper\n");
+    scanf("%c",&ch);
+    scanf("%c",&ch);
+    switch(word[0]){
+        case 'r':
+        printf("my choice is : rock\n");
+        if(ch=='p'){
+            printf("you won\n");
+            your_score++ ;
+        }
+        else if(ch == 's'){
+            printf("you lost\n");
+            my_score++;
+        }
+        else if(ch == 'r'){
+            printf("match tied\n");
+        }
+        else{
+            printf("enter valid key\n");
+        }
+        break;
+        case 'p':
+        printf("my choice is : paper\n");
+        if(ch == 'r'){
+            printf("you lost\n");
+            my_score++;
+        }
+        else if(ch == 's'){
+            printf("you won\n");
+            your_score++;
+        }
+        else if(ch == 'p'){
+            printf("match tied\n");
+        }
+        else{
+            printf("enter valid key\n");
+        }
+        break;
+        case 's':
+        printf("my choice is : scissor\n");
+        if(ch == 'r'){
+            printf("you won\n");
+            your_score++;
+        }
+        else if(ch == 'p'){
+            printf("you lost\n");
+            my_score++;
+        }
+        else if(ch == 's'){
+            printf("match tied\n");
+        }
+        else{
+            printf("enter valid key\n");
+        }
+        break;
+    }
+}
